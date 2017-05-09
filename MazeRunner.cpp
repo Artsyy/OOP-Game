@@ -4,16 +4,16 @@
 #include <cstring>
 #include <GL/gl.h>
 #include <GL/glut.h>
-#include "miro.h"
-#include "pathfinder.h"
+#include "MazeRunner.h"
+#include "Rules.h"
 
 void display();
 void reviewpoint();
 
 static Cell *cell;
 static int width, height;	// the size of maze
-static int starting_x, starting_y;	// starting position
-static int goal_x, goal_y;	// position of goal
+static int start_x, start_y;	// start position
+static int end_x, end_y;	// position of end
 static double R, G, B;		// the color of background
 static int *chosen;		// the pointer of array of connected cells
 // static bool work;			// making maze(true) or pause(false)
@@ -103,26 +103,26 @@ void gen_maze(){
 
 
 	if( length == 0 ){
-		// make start point and goal
+		// make start point and end
 		dest = rand()%2 + 1;
 		if( dest == down ){
-			// starting point
-			starting_x = x = rand()%width;
-			starting_y = y = height - 1;
+			// start point
+			start_x = x = rand()%width;
+			start_y = y = height - 1;
 			cellXY(x, y).road[up] = true;
-			// goal
-			goal_x = x = rand()%width;
-			goal_y = y = 0;
+			// end
+			end_x = x = rand()%width;
+			end_y = y = 0;
 			cellXY(x, y).road[down] = true;
 		}
 		else{
-			// starting point
-			starting_x = x = width - 1;
-			starting_y = y = rand()%height;
+			// start point
+			start_x = x = width - 1;
+			start_y = y = rand()%height;
 			cellXY(x, y).road[right] = true;
-			// goal
-			goal_x = x = 0;
-			goal_y = y = rand()%height;
+			// end
+			end_x = x = 0;
+			end_y = y = rand()%height;
 			cellXY(x, y).road[left] = true;
 		}
 		chosen = new int [height * width];
@@ -292,9 +292,9 @@ void path_finding()
 {
 	// static int oldTime;
 	// int currTime = timeGetTime();
-	static PathFinder finder(::starting_x, ::starting_y, ::width, ::height);
-	static int x = ::starting_x;
-	static int y = ::starting_y;
+	static PathFinder finder(::start_x, ::start_y, ::width, ::height);
+	static int x = ::start_x;
+	static int y = ::start_y;
 
 	if (gb_finder == NULL) {
 		gb_finder = &finder;	// to use in other functions
@@ -306,14 +306,14 @@ void path_finding()
 		return;
 	}
 
-	if(x == ::goal_x && y == ::goal_y) {	// if get the goal
+	if(x == ::end_x && y == ::end_y) {	// if get the end
 		::state++;
-		gb_finder->Set_getgoal();
+		gb_finder->Set_getend();
 		return;
 	}
 
 	if (autoMode) {
-		cellXY(x, y).is_open = true;	// visit starting position
+		cellXY(x, y).is_open = true;	// visit start position
 		if(finder.isStack_Empty() || finder.Stack_Top() < NOT_ANY_DIRECTION) {
 			if(cellXY(x,  y).road[down] == true && y > 0 && cellXY(x, y-1).is_open == false) {
 				finder.set_dest(PathFinder::DOWN);
@@ -399,7 +399,7 @@ void path_finding()
 	}
 }
 
-void goal_ceremony()
+void end_ceremony()
 {
 	static int count = 0;
 	static int oldTime = 0;
@@ -457,7 +457,7 @@ void idle()
 		reviewpoint();
 	}
 	else if (state == 2) {
-		goal_ceremony();
+		end_ceremony();
 	}
 	else if (state == 3) {
 		exit(0);

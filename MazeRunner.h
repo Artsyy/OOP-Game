@@ -1,5 +1,5 @@
-#ifndef __AnoPi_MIRO_H__
-#define __AnoPi_MIRO_H__
+#ifndef __MAZERUNNER_H__
+#define __MAZERUNNER_H__
 
 #define	up		0
 #define	down	1

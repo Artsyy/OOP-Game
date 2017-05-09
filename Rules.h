@@ -1,5 +1,5 @@
-#ifndef __AnoPi_PATHFINDER_H__
-#define __AnoPi_PATHFINDER_H__
+#ifndef __RULES_H__
+#define __RULES_H__
 
 #define ROLL_FACT	10
 
@@ -20,7 +20,7 @@ public:
 
 	double CurrentX() { return current_x; }	// return x position of the finder
 	double CurrentY() { return current_y; }	// return y position of the finder
-	void Set_getgoal() { get_goal = true; }
+	void Set_getend() { get_goal = true; }
 
 	/* stack of path finding */
 	bool isStack_Empty() { return stack_top == -1; }

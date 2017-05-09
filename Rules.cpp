@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <GL/gl.h>
 #include <GL/glut.h>
-#include "pathfinder.h"
+#include "Rules.h"
 
 void PathFinder::set_dest( Direction new_dest ){
 	this->init_dest = Dest;

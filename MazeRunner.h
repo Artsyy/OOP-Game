@@ -1,31 +1,31 @@
 #ifndef __MAZERUNNER_H__
 #define __MAZERUNNER_H__
 
+// already initialized values for directions
 #define	up		0
 #define	down	1
 #define right	2
 #define left	3
-#define NOT_ANY_DIRECTION 4	// cannot go any
-#define NOTUP	4	// cannot go up
-#define NOTDOWN	5	// cannot go down
-#define NOTRIGHT 6	// cannot go right
-#define NOTLEFT	7	// cannot go left
 
+#define noDirection 4	// the square cannot go anywhere else
+#define notUp	4	// the square cannot go up
+#define notDown	5	// the square cannot go down
+#define notRight 6	// the square cannot go right
+#define notLeft	7	// the square cannot go left
 
+#define BeginingTime 20
 
-#define INIT_TIMEFACTOR 20
+typedef struct Space{
+	bool open;	// variable for determining if the spaces next to the square is viable
+	bool path[4];	// each path direction available
 
-typedef struct Cell{
-	bool is_open;	// has this cell visited for making maze
-	bool road[4];	// is each four directions of cells(up, down, right, left) connected to this cell
-
-	Cell() {
-		is_open = false;
-		road[0] = false;
-		road[1] = false;
-		road[2] = false;
-		road[3] = false;
+	Space(){
+		open = false;
+		path[0] = false;
+		path[1] = false;
+		path[2] = false;
+		path[3] = false;
 	}
-} Cell;
+} Space;
 
 #endif

@@ -1,55 +1,50 @@
 #ifndef __RULES_H__
 #define __RULES_H__
 
-#define ROLL_FACT	10
+#define variable 10
 
-class PathFinder {
+class Rules {
 public:
-	enum Direction { UP = 0, DOWN = 1, RIGHT = 2, LEFT = 3 };
-	PathFinder(int x_position, int y_position, int maze_width, int maze_height);
-	~PathFinder() { delete recursion_stack; }
+	// four directions the square can move
+	enum Direction {UP = 0, DOWN = 1, RIGHT = 2, LEFT = 3};
+	
+	// constructor that determines all dimensions 
+	Rules(int x_pos, int y_pos, int maze_width, int maze_height);
+	// destructor for stack information
+	~Rules() {delete recursion_stack;}
 
-	bool isMoving() { return ismoving; }	// is it doing moving animation?
-	void set_dest( Direction new_dest );
+	bool Moving() {return moving;}	// determines if the square is "moving"
+	void Destination(Direction new_dest);
 	void Move();
-	// void SetBodyColor(double r, double g, double b)	{ bodyColorR = r; bodyColorG = g, bodyColorB = b; }
-	void Draw();
-	void UpdateStatus();
-	// if animation is false, it doesn't move arm, leg and eye. Just draw
-	// if get_goal is true then do goal ceremony
+	
+	void Draw();	// draws the square
+	void Update();	// information about square
 
-	double CurrentX() { return current_x; }	// return x position of the finder
-	double CurrentY() { return current_y; }	// return y position of the finder
-	void Set_getend() { get_goal = true; }
+	double CurrentX() {return current_x;}	// returns the x position of the finder
+	double CurrentY() {return current_y;}	// returns the  y position of the finder
+	void End() {goal = true;}	// creates the end position and determines if the suare has reached it
 
-	/* stack of path finding */
-	bool isStack_Empty() { return stack_top == -1; }
-	void Stack_Push(int dest) { recursion_stack[++stack_top] = dest; }
-	int Stack_Pop() { return (stack_top == -1)? recursion_stack[stack_top+1]: recursion_stack[stack_top--]; }
-	int Stack_Top() { return recursion_stack[stack_top]; }
+	// stack of positions that determines if the path is viable
+	bool emptyStack() {return stack_top == -1;}
+	void Stack_Push(int dest) {recursion_stack[++stack_top] = dest;}
+	int Stack_Pop() {return (stack_top == -1)? recursion_stack[stack_top+1]: recursion_stack[stack_top--];}
+	int Stack_Top() {return recursion_stack[stack_top];}
+
 private:
-	/* position and direction for path finding */
+	// the square's position and direction (old and current) when choosing a path
 	double current_x;
 	double current_y;
 	double old_x;
 	double old_y;
 	int Dest;
-	int init_dest;
-	bool get_goal;
+	int begin;
+	bool goal;
 
-	// /* animation */
-	// void lists();	// call list of the finder
-	 bool ismoving;
-	// double degree_7;	// a degree of 7, used calculating movement of one frame of animation
-	// int walk_status;	// for waking animation
-	// int eye_status;		// for face animation
-	 int rolling_status;	// for rotate animation
-	// int goal_ceremony_status;	// for goal ceremony
-	// double bodyColorR;
-	// double bodyColorG;
-	// double bodyColorB;
+	// variables for the square's "movement"
+	bool moving;
+	int rolling_status;
 
-	/* stack of path finding */
+	// variables for the stack of finding positions
 	int* recursion_stack;
 	int stack_top;
 };
